@@ -1,0 +1,136 @@
+html, body, div, span, applet, object, iframe,
+h1, h2, h3, h4, h5, h6, p, blockquote, pre,
+a, abbr, acronym, address, big, cite, code,
+del, dfn, em, img, ins, kbd, q, s, samp,
+small, strike, strong, sub, sup, tt, var,
+b, u, i, center,
+dl, dt, dd, ol, ul, li,
+fieldset, form, label, legend,
+table, caption, tbody, tfoot, thead, tr, th, td,
+article, aside, canvas, details, embed, 
+figure, figcaption, footer, header, hgroup, 
+menu, nav, output, ruby, section, summary,
+time, mark, audio, video {
+	margin: 0;
+	padding: 0;
+	border: 0;
+	font-size: 100%;
+	font: inherit;
+	vertical-align: baseline;
+}
+/* HTML5 display-role reset for older browsers */
+article, aside, details, figcaption, figure, 
+footer, header, hgroup, menu, nav, section {
+	display: block;
+}
+body {
+	line-height: 1;
+}
+ol, ul {
+	list-style: none;
+}
+blockquote, q {
+	quotes: none;
+}
+blockquote:before, blockquote:after,
+q:before, q:after {
+	content: '';
+	content: none;
+}
+table {
+	border-collapse: collapse;
+	border-spacing: 0;
+}
+
+/* Site CSS */
+body {
+	font-family: Verdana;
+}
+nav {
+	background-color: grey;
+	padding: 20px;
+}
+
+nav > a {
+	text-decoration: none;
+	color: white;
+	cursor: pointer;
+}
+
+video {
+	display: none;
+	padding-top: 40px;
+	margin: 0 auto;
+}
+
+.history {
+	float: right;
+}
+
+/* Carousel CSS */
+#carousel {
+	display: none;
+	margin: 0 auto;
+	background-color: #212A3A;
+	box-shadow: 0px 0px 15px 0px rgba(50, 50, 50, 0.75);
+    padding-top: 10px;
+    min-height: 386px;
+}
+
+#carousel p {
+	font-size: 13px;
+	min-height: 49px;
+}
+
+#carousel .noHistoryMsg {
+	position: absolute;
+	top: 50%;
+    left: 20%;
+    font-size: 25px;
+    color: white;
+}
+
+.slick-prev {
+    margin-left: 40px;
+}
+
+.slick-next {
+    margin-right: 40px;
+}
+
+.slick-slide {
+	cursor: pointer;
+	color: white;
+	width: 214px;
+	padding:0 5px;
+}
+
+.slick-slide p {
+	padding-top: 10px;
+	font-size: 13px;
+}
+
+.videoWrapper {
+	position: relative;
+}
+
+.slick-slide .fa {
+	position: absolute;
+	top: 117px;
+	left: 69px;
+	z-index: 9999;
+	display: none;
+}
+
+.slick-active .fa {
+	display: block;
+}
+
+.slick-active img {
+	outline: 3px solid lightblue;
+    outline-offset: -3px;
+}
+
+.selected{
+	text-decoration: underline;
+}

@@ -1,0 +1,7 @@
+1. The data I would want to capture would be the unique ID of the video most importantly.  Other important things may include the name of the video, genre, width/height dimensions, or any other information that is relevant to the user.  Ideally this would all be in JSON format to be parsed.
+
+2. To make the service more efficient I would maintain communication with the client of all the needed business requirements written down on paper. Afterwards I would implement each feature and gradually show the progression to the client/team members to gather relevant feedback.
+
+3. For one, I believe heavily in unit testing. Having my code pass the tests is the first step and also having the code pass through JsHint as well for code quality control.  After this I would have another developer do code review.  Finally, after it's been Q/A’d and satisfied with the client it will be good to go.
+
+4. The main determination I have in a successful project is did this project make the return on investments that was expected for the company. Was there any scope creep that happened that caused the project to go over budget? Was the client happy in the end?  Will there be possible technical debt in the future? If all of these were non issues then this was a success in my opinion.
