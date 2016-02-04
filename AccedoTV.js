@@ -1,65 +1,15 @@
 Videos = new Mongo.Collection('videos'); // create DB
 
-// helper functions
-function onMouseSelectVideo(e, id, videoURL) {
-    if ((oldSlideIndex !== $(e.currentTarget).index())) {
-        $('.slick-active .fa').show(); // display the play icon
-        oldSlideIndex = $(e.currentTarget).index();
-    } else {
-        $('.slick-active .fa').show();
-        playVideoFullScreen($('video'), videoURL);
-        updateDBtoWatched(id);
-    }
-}
-
-function onKeyboardSelectVideo(e, id, videoURL) {
-    var $currentVideo = $(e.currentTarget),
-        key = e.which || e.keyCode;
-    $currentVideo.find('.slick-active .fa').show();
-    if (key === 13) { // Return key
-        playVideoFullScreen($('video'), videoURL);
-        updateDBtoWatched(id);
-    }
-}
-
-function displayVideosAfterLoad(videoList, $section) {
-    $('nav a').removeClass('selected');
-    $section.addClass('selected');
-    $('#carousel').remove();
-    $('nav').after("<div id='carousel' class='manual'></div>");
-
-    $.each(videoList, function() {
-        $('#carousel').append("<div><div class='videoWrapper'><i class='fa fa-youtube-play fa-5x'></i><img src=" + this.videoImg + " width=" + this.videoImgWidth + " height=" + this.videoImgHeight + " data-ID=" + this._id + " data-video-URL=" + this.videoURL + " /><p>" + this.videoTitle + "</p></div>");
-    });
-    $('#carousel').slick(slickSettings);
-    $('#carousel').show();
-}
-
-function playVideoFullScreen($video, url) {
-    $video.attr('src', url);
-    $video.get(0).webkitRequestFullscreen();
-    $video.get(0).play();
-    $video.css('display', 'block');
-}
-
-function updateDBtoWatched(id) {
-    console.log(id);
-    Videos.update(id, {
-        $set: {
-            watched: true
-        }
-    });
-}
-
 if (Meteor.isClient) {
-    var oldSlideIndex,
-        slickSettings = {
+
+    Session.set("oldSlideIndex", null);
+    Session.set("slickSettings", {
             infinite: false,
             speed: 300,
             draggable: false,
             focusOnSelect: true,
             variableWidth: true
-        };
+        });
 
     Template.body.events({
         'click .home': function(e) {
@@ -93,8 +43,8 @@ if (Meteor.isClient) {
                 setTimeout(function() {
                     clearInterval(loop);
                     $('#carousel').fadeIn(500);
-                    $('#carousel').slick(slickSettings);
-                    oldSlideIndex = $('.slick-active').index();
+                    $('#carousel').slick(Session.get("slickSettings"));
+                    Session.set("oldSlideIndex", $('.slick-active').index());
                     Session.set("finishedLoading", true);
                 }, 500);
             }
@@ -147,6 +97,56 @@ if (Meteor.isServer) {
                     watched: false
                 });
             }
+        }
+    });
+}
+
+// helper functions
+function onMouseSelectVideo(e, id, videoURL) {
+    if ((Session.get("oldSlideIndex") !== $(e.currentTarget).index())) {
+        $('.slick-active .fa').show(); // display the play icon
+        Session.set("oldSlideIndex", $(e.currentTarget).index());
+    } else {
+        $('.slick-active .fa').show();
+        playVideoFullScreen($('video'), videoURL);
+        updateDBtoWatched(id);
+    }
+}
+
+function onKeyboardSelectVideo(e, id, videoURL) {
+    var $currentVideo = $(e.currentTarget),
+        key = e.which || e.keyCode;
+    $currentVideo.find('.slick-active .fa').show();
+    if (key === 13) { // Return key
+        playVideoFullScreen($('video'), videoURL);
+        updateDBtoWatched(id);
+    }
+}
+
+function displayVideosAfterLoad(videoList, $section) {
+    $('nav a').removeClass('selected');
+    $section.addClass('selected');
+    $('#carousel').remove();
+    $('nav').after("<div id='carousel' class='manual'></div>");
+
+    $.each(videoList, function() {
+        $('#carousel').append("<div><div class='videoWrapper'><i class='fa fa-youtube-play fa-5x'></i><img src=" + this.videoImg + " width=" + this.videoImgWidth + " height=" + this.videoImgHeight + " data-ID=" + this._id + " data-video-URL=" + this.videoURL + " /><p>" + this.videoTitle + "</p></div>");
+    });
+    $('#carousel').slick(Session.get("slickSettings"));
+    $('#carousel').show();
+}
+
+function playVideoFullScreen($video, url) {
+    $video.attr('src', url);
+    $video.get(0).webkitRequestFullscreen();
+    $video.get(0).play();
+    $video.css('display', 'block');
+}
+
+function updateDBtoWatched(id) {
+    Videos.update(id, {
+        $set: {
+            watched: true
         }
     });
 }
