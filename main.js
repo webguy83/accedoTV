@@ -2,15 +2,6 @@ Videos = new Mongo.Collection('videos'); // create DB
 
 if (Meteor.isClient) {
 
-    Session.set("oldSlideIndex", null);
-    Session.set("slickSettings", {
-            infinite: false,
-            speed: 300,
-            draggable: false,
-            focusOnSelect: true,
-            variableWidth: true
-        });
-
     Template.body.events({
         'click .home': function(e) {
             e.preventDefault();
@@ -33,41 +24,6 @@ if (Meteor.isClient) {
         },
         'keypress, keydown #carousel.manual .slick-list': function(e) {
             onKeyboardSelectVideo(e, $(e.currentTarget).find('img').data('id'), $(e.currentTarget).find('.slick-active img').attr('data-video-url'));
-        }
-    });
-
-    Template.carousel.onRendered(function() {
-        // Init Render
-        var loop = setInterval(function() {
-            if (Videos.find().count() !== 0) {
-                setTimeout(function() {
-                    clearInterval(loop);
-                    $('#carousel').fadeIn(500);
-                    $('#carousel').slick(Session.get("slickSettings"));
-                    Session.set("oldSlideIndex", $('.slick-active').index());
-                    Session.set("finishedLoading", true);
-                }, 500);
-            }
-        }, 200);
-    });
-
-    Template.carousel.helpers({
-        videos: function() {
-            $('nav a').removeClass('selected');
-            $('.home').addClass('selected');
-            return Videos.find();
-        }
-    });
-
-    Template.carousel.events({
-        'click .slick-active': function(e) {
-            onMouseSelectVideo(e, this._id, this.videoURL);
-        },
-        'ended video': function() {
-            $('video').get(0).webkitExitFullScreen();
-        },
-        'keypress, keydown .slick-active': function(e) {
-            onKeyboardSelectVideo(e, $(e.currentTarget).find('.slick-active img').data('id'), $(e.currentTarget).find('.slick-active img').attr('data-video-url'));
         }
     });
 }
@@ -109,7 +65,7 @@ function onMouseSelectVideo(e, id, videoURL) {
     } else {
         $('.slick-active .fa').show();
         playVideoFullScreen($('video'), videoURL);
-        updateDBtoWatched(id);
+        Meteor.call("updateDBtoWatched", id);
     }
 }
 
@@ -119,7 +75,7 @@ function onKeyboardSelectVideo(e, id, videoURL) {
     $currentVideo.find('.slick-active .fa').show();
     if (key === 13) { // Return key
         playVideoFullScreen($('video'), videoURL);
-        updateDBtoWatched(id);
+        Meteor.call("updateDBtoWatched", id);
     }
 }
 
@@ -141,12 +97,4 @@ function playVideoFullScreen($video, url) {
     $video.get(0).webkitRequestFullscreen();
     $video.get(0).play();
     $video.css('display', 'block');
-}
-
-function updateDBtoWatched(id) {
-    Videos.update(id, {
-        $set: {
-            watched: true
-        }
-    });
 }

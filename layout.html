@@ -11,23 +11,6 @@
   	{{> carousel}}
   </div>
 </body>
-<template name="carousel">
-  <div id="carousel">
-    {{#each videos}}
-		{{> video}}
-  	{{/each}}
-  </div>
-  {{> videoPlayer}}
-</template>
-<template name="video">
-	<div>
-	 <div class="videoWrapper">
-	 	<i class="fa fa-youtube-play fa-5x"></i>
-	 	<img src="{{videoImg}}" width="{{videoImgWidth}}" height="{{videoImgHeight}}" data-video-URL="{{videoURL}}" />
-	 <p>{{videoTitle}}</p>
-	 </div>
-	</div>
-</template>
 <template name="videoPlayer">
 <video width="640" height="360" controls>
 </video>
